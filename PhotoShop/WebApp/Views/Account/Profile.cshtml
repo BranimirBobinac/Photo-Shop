@@ -1,0 +1,85 @@
+@model ProfileViewModel
+@{
+    ViewData["Title"] = "Moj profil";
+}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow">
+            <div class="card-header bg-slate"><h4 class="mb-0">👤 Moj profil</h4></div>
+            <div class="card-body">
+                <div id="successMsg" class="alert alert-success" style="display:none;"></div>
+                <div id="errorMsg" class="alert alert-danger" style="display:none;"></div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Korisničko ime</label>
+                    <input type="text" class="form-control" value="@Model.Username" readonly />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">E-mail</label>
+                    <input type="email" id="email" class="form-control" value="@Model.Email" />
+                </div>
+                <div class="row">
+                    <div class="col mb-3">
+                        <label class="form-label">Ime</label>
+                        <input type="text" id="firstName" class="form-control" value="@Model.FirstName" />
+                    </div>
+                    <div class="col mb-3">
+                        <label class="form-label">Prezime</label>
+                        <input type="text" id="lastName" class="form-control" value="@Model.LastName" />
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Telefon</label>
+                    <input type="tel" id="phone" class="form-control" value="@Model.Phone" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Nova lozinka (opcionalno)</label>
+                    <input type="password" id="newPassword" class="form-control" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Ponovi lozinku</label>
+                    <input type="password" id="confirmPassword" class="form-control" />
+                </div>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-brand" onclick="saveProfile()">Spremi</button>
+                    <a href="/" class="btn btn-secondary">Odustani</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+<script>
+async function saveProfile() {
+    const newPwd = document.getElementById('newPassword').value;
+    const confirmPwd = document.getElementById('confirmPassword').value;
+    const err = document.getElementById('errorMsg');
+    const ok = document.getElementById('successMsg');
+    err.style.display = 'none'; ok.style.display = 'none';
+    if (newPwd && newPwd !== confirmPwd) {
+        err.textContent = 'Lozinke se ne podudaraju.';
+        err.style.display = 'block';
+        return;
+    }
+    try {
+        const res = await fetch('/Account/UpdateProfile', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                email: document.getElementById('email').value,
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                phone: document.getElementById('phone').value,
+                newPassword: newPwd || null,
+                confirmPassword: confirmPwd || null
+            })
+        });
+        const json = await res.json();
+        if (json.success) { ok.textContent = json.message; ok.style.display = 'block'; }
+        else { err.textContent = json.message; err.style.display = 'block'; }
+    } catch(e) {
+        err.textContent = 'Greška pri komunikaciji.';
+        err.style.display = 'block';
+    }
+}
+</script>
+}

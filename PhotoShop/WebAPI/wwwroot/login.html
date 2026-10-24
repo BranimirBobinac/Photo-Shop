@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <title>PhotoShop - Prijava</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: Arial, sans-serif; background: linear-gradient(135deg,#22313f,#3a6b6a); display: flex; justify-content: center; align-items: center; height: 100vh; }
+        .card { background: white; padding: 40px; border-radius: 10px; width: 360px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+        h2 { text-align: center; margin-bottom: 24px; color: #333; }
+        label { display: block; margin-bottom: 4px; font-size: 14px; color: #555; }
+        input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; margin-bottom: 16px; font-size: 14px; }
+        input:focus { outline: none; border-color: #3a8f85; box-shadow: 0 0 0 3px rgba(58,143,133,.2); }
+        button { width: 100%; padding: 12px; background: #3a8f85; color: white; border: none; border-radius: 6px; font-size: 16px; cursor: pointer; }
+        button:hover { background: #2f766e; }
+        .error { color: #7a5212; background: #fbf1df; padding: 8px 10px; border-radius: 6px; font-size: 13px; margin-bottom: 10px; display: none; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>📷 PhotoShop — Zapisnici</h2>
+        <p class="error" id="errMsg"></p>
+        <label>Korisničko ime:</label>
+        <input type="text" id="username" placeholder="Username" />
+        <label>Lozinka:</label>
+        <input type="password" id="password" placeholder="Password" />
+        <button onclick="login()">Prijava</button>
+    </div>
+    <script>
+        async function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const err = document.getElementById('errMsg');
+            err.style.display = 'none';
+            try {
+                const res = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+                if (!res.ok) {
+                    const data = await res.json();
+                    err.textContent = data.message || 'Greška pri prijavi.';
+                    err.style.display = 'block';
+                    return;
+                }
+                const data = await res.json();
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('username', data.username);
+                window.location.href = '/logs.html';
+            } catch (e) {
+                err.textContent = 'Greška pri povezivanju.';
+                err.style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>

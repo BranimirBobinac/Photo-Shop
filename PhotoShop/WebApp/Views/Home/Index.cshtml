@@ -1,0 +1,47 @@
+@{
+    ViewData["Title"] = "Dobrodošli";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="utf-8" />
+    <title>PhotoShop</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/theme.css" rel="stylesheet" />
+    <style>
+        body { margin:0; font-family:Arial,sans-serif; }
+        .hero { background:linear-gradient(135deg,#22313f 0%,#2f4858 55%,#3a6b6a 100%); color:white; min-height:100vh; display:flex; flex-direction:column; }
+        .hero-nav { padding:20px 40px; display:flex; justify-content:space-between; align-items:center; }
+        .brand { font-size:1.8rem; font-weight:bold; color:white; text-decoration:none; }
+        .hero-content { flex:1; display:flex; align-items:center; padding:60px 40px; }
+        .hero-text { max-width:600px; }
+        .hero-text h1 { font-size:3.5rem; margin-bottom:20px; }
+        .hero-text p { font-size:1.2rem; color:#ccc; margin-bottom:30px; line-height:1.6; }
+        .btn-cta { background:#3a8f85; color:white; padding:14px 36px; border:none; border-radius:30px; font-size:1.1rem; text-decoration:none; display:inline-block; }
+        .btn-cta:hover { background:#2f766e; color:white; }
+        .hero-grid { margin-left:60px; display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+        .hero-grid div { width:160px; height:160px; border-radius:12px; background:rgba(255,255,255,0.1); display:flex; align-items:center; justify-content:center; font-size:3rem; }
+        footer { background:#1a2530; color:#9aa8b3; text-align:center; padding:20px; }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <nav class="hero-nav">
+            <a href="/" class="brand">📷 PhotoShop</a>
+            <a href="/Account/Login" class="btn-cta">Prijava</a>
+        </nav>
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>Otkrij ljepotu fotografije</h1>
+                <p>Pregledavaj tisuće jedinstvenih fotografija od profesionalnih fotografa. Pronađi savršenu sliku za svaki projekt.</p>
+                <a href="/Account/Login" class="btn-cta">See Inside →</a>
+            </div>
+            <div class="hero-grid">
+                <div>🌄</div><div>🏙️</div><div>🌊</div><div>🌿</div>
+            </div>
+        </div>
+    </div>
+    <footer>© 2026 PhotoShop — Platforma za prodaju fotografija</footer>
+</body>
+</html>

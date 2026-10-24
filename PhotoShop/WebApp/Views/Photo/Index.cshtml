@@ -1,0 +1,65 @@
+@model PhotoListViewModel
+@{
+    ViewData["Title"] = "Fotografije - Admin";
+}
+<h2 class="mb-4">📸 Fotografije</h2>
+@if (TempData["Error"] != null) { <div class="alert alert-danger">@TempData["Error"]</div> }
+<form method="get" class="row g-2 mb-4 align-items-end">
+    <div class="col-md-5">
+        <input type="text" name="searchText" value="@Model.SearchText" class="form-control" placeholder="Pretraži..." />
+    </div>
+    <div class="col-md-4">
+        <select name="photographerFilter" class="form-select">
+            <option value="">— Svi fotografi —</option>
+            @foreach (SelectListItem item in Model.Photographers!)
+            {
+                 var pgSel = Model.PhotographerFilter?.ToString() == item.Value ? "selected" : null; 
+<option value="@item.Value" selected="@pgSel">@item.Text</option>
+            }
+        </select>
+    </div>
+    <div class="col-auto"><button type="submit" class="btn btn-brand">Pretraži</button></div>
+    <div class="col-auto ms-auto"><a asp-action="Create" class="btn btn-outline-brand">+ Dodaj fotografiju</a></div>
+</form>
+<div class="table-responsive">
+    <table class="table table-hover align-middle">
+        <thead class="table-dark">
+            <tr><th>Slika</th><th>Naziv</th><th>Fotograf</th><th>Cijena</th><th>Oznake</th><th>Akcije</th></tr>
+        </thead>
+        <tbody>
+            @foreach (var photo in Model.Photos)
+            {
+                <tr>
+                    <td><img src="@photo.ImageUrl" alt="@photo.Name" style="width:60px;height:45px;object-fit:cover;border-radius:6px;" onerror="this.style.display='none'" /></td>
+                    <td>@photo.Name</td>
+                    <td>@photo.PhotographerName</td>
+                    <td>€@photo.Price.ToString("F2")</td>
+                    <td>@foreach (var tag in photo.TagNames) { <span class="badge badge-brand me-1">@tag</span> }</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@photo.Id" class="btn btn-sm btn-outline-secondary">Uredi</a>
+                        <a asp-action="Delete" asp-route-id="@photo.Id" class="btn btn-sm btn-outline-warn">Obriši</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+@if (Model.TotalPages > 1)
+{
+    <nav>
+        <ul class="pagination justify-content-center">
+            <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : "")">
+                <a class="page-link" asp-action="Index" asp-route-page="@(Model.CurrentPage-1)" asp-route-searchText="@Model.SearchText" asp-route-photographerFilter="@Model.PhotographerFilter">← Prethodni</a>
+            </li>
+            @for (int i = 1; i <= Model.TotalPages; i++)
+            {
+                <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                    <a class="page-link" asp-action="Index" asp-route-page="@i" asp-route-searchText="@Model.SearchText" asp-route-photographerFilter="@Model.PhotographerFilter">@i</a>
+                </li>
+            }
+            <li class="page-item @(Model.CurrentPage == Model.TotalPages ? "disabled" : "")">
+                <a class="page-link" asp-action="Index" asp-route-page="@(Model.CurrentPage+1)" asp-route-searchText="@Model.SearchText" asp-route-photographerFilter="@Model.PhotographerFilter">Sljedeći →</a>
+            </li>
+        </ul>
+    </nav>
+}

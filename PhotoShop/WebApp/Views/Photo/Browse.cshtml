@@ -1,0 +1,58 @@
+@model List<WebApp.ViewModels.PhotoViewModel>
+@{
+    ViewData["Title"] = "Fotografije";
+    int currentPage = ViewBag.CurrentPage;
+    int totalPages = ViewBag.TotalPages;
+}
+<h2 class="mb-4">🖼️ Fotografije</h2>
+<form method="get" class="row g-2 mb-4 align-items-end">
+    <div class="col-md-5"><input type="text" name="searchText" value="@ViewBag.SearchText" class="form-control" placeholder="Pretraži fotografije..." /></div>
+    <div class="col-md-4">
+        <select name="tagFilter" class="form-select">
+            <option value="">— Sve oznake —</option>
+            @foreach (SelectListItem item in ViewBag.Tags) {
+                 var tagSel = ViewBag.TagFilter?.ToString() == item.Value ? "selected" : null; 
+<option value="@item.Value" selected="@tagSel">@item.Text</option>
+            }
+        </select>
+    </div>
+    <div class="col-auto"><button type="submit" class="btn btn-brand">Pretraži</button></div>
+</form>
+<div class="row row-cols-1 row-cols-md-4 g-4">
+    @foreach (var photo in Model)
+    {
+        <div class="col">
+            <a asp-action="Details" asp-route-id="@photo.Id" class="text-decoration-none text-dark">
+                <div class="card photo-card h-100 shadow-sm">
+                    <img src="@photo.ImageUrl" alt="@photo.Name" class="card-img-top" style="height:180px;object-fit:cover;" onerror="this.src='https://placehold.co/300x180?text=Photo'" />
+                    <div class="card-body pb-1">
+                        <h6 class="card-title fw-bold">@photo.Name</h6>
+                        <p class="text-muted small mb-1">📷 @photo.PhotographerName</p>
+                        <p class="fw-bold mb-1 text-brand">€@photo.Price.ToString("F2")</p>
+                    </div>
+                    <div class="card-footer bg-white border-0 pt-0">
+                        @foreach (var tag in photo.TagNames) { <span class="badge badge-brand me-1" style="font-size:0.7rem;">@tag</span> }
+                    </div>
+                </div>
+            </a>
+        </div>
+    }
+</div>
+@if (totalPages > 1)
+{
+    <nav class="mt-4">
+        <ul class="pagination justify-content-center">
+            <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                <a class="page-link" asp-action="Browse" asp-route-page="@(currentPage-1)" asp-route-searchText="@ViewBag.SearchText" asp-route-tagFilter="@ViewBag.TagFilter">← Prethodni</a>
+            </li>
+            @for (int i = Math.Max(1, currentPage-2); i <= Math.Min(totalPages, currentPage+2); i++) {
+                <li class="page-item @(i == currentPage ? "active" : "")">
+                    <a class="page-link" asp-action="Browse" asp-route-page="@i" asp-route-searchText="@ViewBag.SearchText" asp-route-tagFilter="@ViewBag.TagFilter">@i</a>
+                </li>
+            }
+            <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
+                <a class="page-link" asp-action="Browse" asp-route-page="@(currentPage+1)" asp-route-searchText="@ViewBag.SearchText" asp-route-tagFilter="@ViewBag.TagFilter">Sljedeći →</a>
+            </li>
+        </ul>
+    </nav>
+}

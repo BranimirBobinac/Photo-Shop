@@ -1,0 +1,54 @@
+/* PhotoShop theme — calm teal & slate palette (no red) */
+:root {
+    --ps-brand: #3a8f85;
+    --ps-brand-hover: #2f766e;
+    --ps-brand-soft: #e3f1ef;
+    --ps-slate: #22313f;
+    --ps-slate-2: #2f4858;
+    --ps-slate-3: #3a6b6a;
+    --ps-bg: #f4f6f5;
+    --ps-warn: #c98a2b;
+    --ps-warn-hover: #b07624;
+    --ps-warn-soft: #fbf1df;
+    --ps-warn-text: #7a5212;
+}
+
+body { background-color: var(--ps-bg); }
+
+/* Brand utilities */
+.bg-brand { background-color: var(--ps-brand) !important; color: #fff !important; }
+.bg-slate { background-color: var(--ps-slate) !important; color: #fff !important; }
+.text-brand { color: var(--ps-brand) !important; }
+.border-brand { border-color: var(--ps-brand) !important; }
+
+.btn-brand { background-color: var(--ps-brand); border-color: var(--ps-brand); color: #fff; }
+.btn-brand:hover, .btn-brand:focus, .btn-brand:active { background-color: var(--ps-brand-hover) !important; border-color: var(--ps-brand-hover) !important; color: #fff !important; }
+.btn-outline-brand { color: var(--ps-brand); border-color: var(--ps-brand); background: transparent; }
+.btn-outline-brand:hover, .btn-outline-brand:focus, .btn-outline-brand:active { background-color: var(--ps-brand) !important; border-color: var(--ps-brand) !important; color: #fff !important; }
+
+/* Delete / warning actions use a soft amber instead of red */
+.btn-warn { background-color: var(--ps-warn); border-color: var(--ps-warn); color: #fff; }
+.btn-warn:hover, .btn-warn:focus, .btn-warn:active { background-color: var(--ps-warn-hover) !important; border-color: var(--ps-warn-hover) !important; color: #fff !important; }
+.btn-outline-warn { color: var(--ps-warn-text); border-color: var(--ps-warn); background: transparent; }
+.btn-outline-warn:hover, .btn-outline-warn:focus, .btn-outline-warn:active { background-color: var(--ps-warn) !important; border-color: var(--ps-warn) !important; color: #fff !important; }
+.bg-warn { background-color: var(--ps-warn) !important; color: #fff !important; }
+.border-warn { border-color: var(--ps-warn) !important; }
+
+/* Tags */
+.badge-brand { background-color: var(--ps-brand-soft); color: var(--ps-brand-hover); font-weight: 600; border: 1px solid #c4e2de; }
+
+/* Validation & error messages: amber instead of red */
+.text-danger, .field-validation-error { color: var(--ps-warn-text) !important; }
+.alert-danger { background-color: var(--ps-warn-soft); border-color: #f0d9ad; color: var(--ps-warn-text); }
+.input-validation-error { border-color: var(--ps-warn) !important; }
+
+/* Focus rings in brand colour */
+.form-control:focus, .form-select:focus { border-color: var(--ps-brand); box-shadow: 0 0 0 .2rem rgba(58,143,133,.2); }
+
+/* Links */
+a { color: var(--ps-brand-hover); }
+
+/* Pagination */
+.pagination .page-link { color: var(--ps-brand-hover); }
+.pagination .page-item.active .page-link { background-color: var(--ps-brand); border-color: var(--ps-brand); color: #fff; }
+.pagination .page-link:focus { box-shadow: 0 0 0 .2rem rgba(58,143,133,.2); }

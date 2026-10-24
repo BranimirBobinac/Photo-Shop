@@ -1,0 +1,15 @@
+@model WebApp.Models.Tag
+@{ ViewData["Title"] = "Obriši oznaku"; }
+<div class="row justify-content-center"><div class="col-md-5">
+<div class="card border-warn shadow">
+    <div class="card-header bg-warn text-white"><h5 class="mb-0">🗑️ Potvrda brisanja</h5></div>
+    <div class="card-body text-center p-4">
+        <h5><span class="badge badge-brand" style="font-size:1.1rem;">@Model.Name</span></h5>
+        <p class="text-muted mt-2">Jeste li sigurni da želite obrisati ovu oznaku?</p>
+        <form asp-action="Delete" asp-route-id="@Model.Id" method="post" class="d-flex gap-2 justify-content-center">
+            <button type="submit" class="btn btn-warn">Da, obriši</button>
+            <a asp-action="Index" class="btn btn-secondary">Odustani</a>
+        </form>
+    </div>
+</div>
+</div></div>

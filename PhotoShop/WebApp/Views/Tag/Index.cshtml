@@ -1,0 +1,20 @@
+@model List<WebApp.Models.Tag>
+@{ ViewData["Title"] = "Oznake"; }
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>🏷️ Oznake</h2>
+    <a asp-action="Create" class="btn btn-outline-brand">+ Dodaj oznaku</a>
+</div>
+<table class="table table-hover">
+    <thead class="table-dark"><tr><th>Naziv</th><th>Akcije</th></tr></thead>
+    <tbody>
+        @foreach (var t in Model) {
+            <tr>
+                <td><span class="badge badge-brand" style="font-size:0.9rem;">@t.Name</span></td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@t.Id" class="btn btn-sm btn-outline-secondary">Uredi</a>
+                    <a asp-action="Delete" asp-route-id="@t.Id" class="btn btn-sm btn-outline-warn">Obriši</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

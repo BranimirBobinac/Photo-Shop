@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <title>PhotoShop - Zapisnici</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: Arial, sans-serif; background: #f4f6f5; }
+        .navbar { background: #22313f; color: white; padding: 12px 24px; display: flex; justify-content: space-between; align-items: center; }
+        .navbar h1 { font-size: 18px; }
+        .btn { padding: 8px 16px; background: #3a8f85; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; }
+        .btn:hover { background: #2f766e; }
+        .container { max-width: 900px; margin: 30px auto; background: white; border-radius: 10px; padding: 24px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h2 { margin-bottom: 20px; color: #333; }
+        ul { list-style: none; margin-bottom: 20px; }
+        ul li { padding: 10px; border-bottom: 1px solid #eee; font-size: 14px; color: #444; }
+        ul li:last-child { border-bottom: none; }
+        .controls { display: flex; align-items: center; gap: 10px; margin-top: 20px; justify-content: flex-end; }
+        select { padding: 8px 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <h1>📷 PhotoShop — Zapisnici</h1>
+        <button class="btn" onclick="logout()">Odjava</button>
+    </div>
+    <div class="container">
+        <h2>Popis zapisnika</h2>
+        <ul id="logList"><li>Učitavanje...</li></ul>
+        <div class="controls">
+            <select id="countSelect" onchange="loadLogs()">
+                <option value="10">10</option>
+                <option value="25" selected>25</option>
+                <option value="50">50</option>
+            </select>
+            <button class="btn" onclick="loadLogs()">Prikaži zapisnike</button>
+        </div>
+    </div>
+    <script>
+        const token = localStorage.getItem('token');
+        if (!token) window.location.href = '/login.html';
+        async function loadLogs() {
+            const n = document.getElementById('countSelect').value;
+            const res = await fetch('/api/logs/get/' + n, { headers: { 'Authorization': 'Bearer ' + token } });
+            if (res.status === 401) { window.location.href = '/login.html'; return; }
+            const logs = await res.json();
+            const ul = document.getElementById('logList');
+            ul.innerHTML = logs.length === 0 ? '<li>Nema zapisnika.</li>' :
+                logs.map(l => '<li>[' + new Date(l.timestamp).toLocaleString('hr-HR') + '] <b>' + l.level + '</b>: ' + l.message + '</li>').join('');
+        }
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('username');
+            window.location.href = '/login.html';
+        }
+        loadLogs();
+    </script>
+</body>
+</html>

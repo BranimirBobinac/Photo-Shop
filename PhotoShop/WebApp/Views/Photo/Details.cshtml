@@ -1,0 +1,40 @@
+@model WebApp.ViewModels.PhotoViewModel
+@{
+    ViewData["Title"] = Model.Name;
+    bool alreadyDownloaded = ViewBag.AlreadyDownloaded;
+}
+<div class="row">
+    <div class="col-md-6">
+        <img src="@Model.ImageUrl" alt="@Model.Name" class="img-fluid rounded shadow" style="max-height:450px;width:100%;object-fit:cover;" onerror="this.src='https://placehold.co/600x400?text=Photo'" />
+    </div>
+    <div class="col-md-6">
+        <nav aria-label="breadcrumb" class="mb-2">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-action="Browse">Fotografije</a></li>
+                <li class="breadcrumb-item active">@Model.Name</li>
+            </ol>
+        </nav>
+        <h2 class="fw-bold">@Model.Name</h2>
+        <p class="text-muted">📷 @Model.PhotographerName</p>
+        <p class="text-muted small">Objavljeno: @Model.CreatedAt.ToString("dd.MM.yyyy")</p>
+        <div class="mb-3">
+            @foreach (var tag in Model.TagNames) { <span class="badge badge-brand me-1">@tag</span> }
+        </div>
+        <p class="lead">@Model.Description</p>
+        <h3 class="fw-bold text-brand">€@Model.Price.ToString("F2")</h3>
+        @if (TempData["DownloadSuccess"] != null) { <div class="alert alert-success mt-2">@TempData["DownloadSuccess"]</div> }
+        <div class="mt-3">
+            @if (alreadyDownloaded)
+            {
+                <button class="btn btn-success btn-lg" disabled>✅ Već preuzeto</button>
+            }
+            else
+            {
+                <form asp-action="Download" asp-route-id="@Model.Id" method="post">
+                    <button type="submit" class="btn btn-lg btn-brand">⬇️ Preuzmi fotografiju</button>
+                </form>
+            }
+        </div>
+        <div class="mt-3"><a asp-action="Browse" class="btn btn-outline-secondary">← Natrag</a></div>
+    </div>
+</div>

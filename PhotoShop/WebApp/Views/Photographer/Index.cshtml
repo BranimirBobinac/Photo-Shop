@@ -1,0 +1,23 @@
+@model List<WebApp.Models.Photographer>
+@{ ViewData["Title"] = "Fotografi"; }
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>📷 Fotografi</h2>
+    <a asp-action="Create" class="btn btn-outline-brand">+ Dodaj fotografa</a>
+</div>
+@if (TempData["Error"] != null) { <div class="alert alert-danger">@TempData["Error"]</div> }
+<table class="table table-hover">
+    <thead class="table-dark"><tr><th>Ime</th><th>E-mail</th><th>Biografija</th><th>Akcije</th></tr></thead>
+    <tbody>
+        @foreach (var p in Model) {
+            <tr>
+                <td>@p.Name</td>
+                <td>@p.Email</td>
+                <td>@(p.Bio?.Length > 60 ? p.Bio.Substring(0,60) + "..." : p.Bio)</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@p.Id" class="btn btn-sm btn-outline-secondary">Uredi</a>
+                    <a asp-action="Delete" asp-route-id="@p.Id" class="btn btn-sm btn-outline-warn">Obriši</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
