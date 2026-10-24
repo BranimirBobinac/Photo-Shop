@@ -1,4 +1,4 @@
-# 📷 PhotoShop
+# PhotoShop
 
 PhotoShop is a web platform for browsing, selling and downloading photographs. Photographers' work is organised by tags, users can search and download photos, and administrators manage the whole catalogue through a dedicated admin interface.
 
@@ -142,7 +142,14 @@ New accounts are always created with the **User** role. To get an administrator:
 4. You can now call protected endpoints such as `/api/logs/get/{n}`.
 
 ---
+## Security note: JWT secret key
+
+The JWT signing key is stored in plain text in `WebAPI/appsettings.json` (`Jwt:Key`), so anyone who can see the source code can see it. Anyone who knows this key can create valid tokens and get access to the protected API endpoints.
+
+This was a deliberate choice. PhotoShop is a student/learning project that only runs locally, so hiding the key was not needed. Keeping it in `appsettings.json` also means the project runs right after cloning, with no extra setup.
+
+In a real application the key should never be committed to the repository.
 
 ## Notes
 - The UI is in Croatian.
-- The JWT key and connection strings in `appsettings.json` are meant for local development only – use user secrets or environment variables for any real deployment.
+
