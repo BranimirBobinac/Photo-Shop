@@ -152,4 +152,10 @@ In a real application the key should never be committed to the repository.
 
 ## Notes
 - The UI is in Croatian.
+- Admin account already exists:
+  username: bronka
+  password: 123
+
+## Author
+* Branimir Bobinac
 
